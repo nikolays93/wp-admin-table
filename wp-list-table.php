@@ -9,7 +9,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
     require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
-class WPListTableFramework extends \WP_List_Table {
+class WPListTable extends \WP_List_Table {
 
     private $columns = array(),
             $sortable = array(),
