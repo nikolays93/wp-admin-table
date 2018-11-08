@@ -97,22 +97,24 @@ class WPListTable extends \WP_List_Table {
         /**
          * @todo repair it
          */
-        // $actions = array(
-        //     'edit' => sprintf('<a href="?page=%s&do=edit&context=%s&value=%s">%s</a>',
-        //         Utils::OPTION,
-        //         esc_attr( $this->context ),
-        //         esc_attr( $item['title'] ),
-        //         esc_attr( __('Edit') )
-        //     ),
-        //     'delete' => sprintf('<a href="%s">%s</a>',
-        //         wp_nonce_url( sprintf('?page=%s&do=remove&context=%s&value=%s',
-        //             esc_attr( $_REQUEST['page'] ),
-        //             esc_attr( $this->context ),
-        //             esc_attr( $item['title'] ) ), 'trash-'.$item['title'], '_wpnonce' ),
-        //         __('Delete')
-        //     ),
-        // );
-        $actions = array();
+        $actions = array(
+            'edit' => sprintf('<a href="%spost.php?post=%d&action=edit">%s</a>',
+                get_admin_url(),
+                $item['ID'],
+                __('Edit')
+            ),
+            'delete' => sprintf('<a href="%s">%s</a>',
+                wp_nonce_url(
+                    sprintf('?page=%s&do=remove&value=%s',
+                        esc_attr( $_REQUEST['page'] ),
+                        esc_attr( $item['title'] )
+                    ),
+                    'trash-'.$item['title'],
+                    '_wpnonce'
+                ),
+                __('Delete')
+            ),
+        );
 
         return $name . $this->row_actions($actions);
     }
@@ -137,7 +139,7 @@ class WPListTable extends \WP_List_Table {
     }
 
     /****************************** Bulk Actions ******************************/
-    public function set_bulk_actions( $actions )
+    public function set_bulk_actions( $actions = array() )
     {
         $this->actions = wp_parse_args( $actions, array(
             'delete' => __( 'Delete' ),
